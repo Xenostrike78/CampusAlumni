@@ -72,8 +72,12 @@ def logout_view(request):
 def edit_profile(request):
     """Edit profile view."""
     user = request.user
+    college = College.objects.all()
     if request.method == 'POST':
         # Update user profile with form data
+        college_id = request.POST.get('college_name', user.college)
+        if college_id:
+            user.college = College.objects.get(id=college_id)
         user.first_name = request.POST.get('first_name', user.first_name)
         user.last_name = request.POST.get('last_name', user.last_name)
         user.short_bio = request.POST.get('short_bio', user.short_bio)
@@ -102,7 +106,7 @@ def edit_profile(request):
         messages.success(request, 'Profile updated successfully.')
         return redirect('profile')
     
-    return render(request, 'edit-profile.html', {'user': user})
+    return render(request, 'edit-profile.html', {'user': user,"colleges":college})
 
 
 
@@ -273,6 +277,8 @@ def accept_connection_request(request, request_id):
     if request.method == 'POST':
         to_user = request.user
         from_user = get_object_or_404(User, id=request_id)
+        print(to_user,"touser")
+        print(from_user,"fromuser")
         # Check if connection already exists
         connection = UserConnection.objects.filter(from_user=from_user, to_user=to_user, status='pending').first()
         print(connection)

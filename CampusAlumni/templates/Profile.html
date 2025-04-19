@@ -104,7 +104,7 @@ button {
                   <li><a href="{% url 'community_feed' %}">Community</a></li>
                   <li><a href="{% url 'alumni_directory' %}" class="active">Directory</a></li>
                   <li>
-                      <div class="avatar avatar-sm">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
+                    <li><a href="{% url 'logout' %}" class="active">Logout</a></li>
                   </li>
               </ul>
             </nav>

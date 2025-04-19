@@ -19,9 +19,7 @@
             <ul class="nav-links" style="margin-left: auto;">
                 <li><a href="{% url 'community_feed' %}">Community</a></li>
                 <li><a href="{% url 'alumni_directory' %}" class="active">Directory</a></li>
-                <li>
-                    <div class="avatar avatar-sm">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
-                </li>
+                <li><a href="{% url 'logout' %}" class="active">Logout</a></li>
             </ul>
         </nav>
     </div>
@@ -51,7 +49,7 @@
         <p class="batch">Batch of {{ incoming.from_user.graduation_year }}</p>
       </div>
       <div class="actions">
-        <form method="post" action="{% url 'accept_connection_request' incoming.id %}">
+        <form method="post" action="{% url 'accept_connection_request' incoming.from_user.id %}">
           {% csrf_token %}
           <button class="accept" type="submit">Accept</button>
         </form>

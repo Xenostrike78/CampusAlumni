@@ -89,8 +89,14 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="text" name="college_name" class="form-control" id="university" placeholder=" " value="{% if user.college %}{{ user.college.name }}{% endif %}">
-                                    <label for="university" class="form-label">College/University Name</label>
+                                    <!-- <input type="text" name="college_name" class="form-control" id="university" placeholder=" " value="{% if user.college %}{{ user.college.name }}{% endif %}"> -->
+                                    <label for="university" >College/University Name</label>
+                                    <select name="college_name" class="form-control" id="university">
+                                        <option value="" disabled {% if not user.college %}selected{% endif %}>-- Select Your College --</option>
+                                        {% for college in colleges %}
+                                            <option value="{{ college.id }}" {% if user.college and user.college.id == college.id %}selected{% endif %}>{{ college.name }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -215,84 +221,8 @@
                     </div>
                 </div>
 
-                <!-- Network Settings -->
-                <div class="edit-form-section slide-in-bottom" style="animation-delay: 0.5s;">
-                    <div class="form-section-title">
-                        <h3><i class="fas fa-users"></i> College Network Settings</h3>
-                        <i class="fas fa-chevron-down toggle-icon"></i>
-                    </div>
-                    <div class="form-section-content">
-                        <div class="form-group">
-                            <div class="terms-checkbox">
-                                <input type="checkbox" name="networkOptIn" id="networkOptIn" {% if user.join_college_network %}checked{% endif %}>
-                                <label for="networkOptIn">Join my college's alumni network</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="terms-checkbox">
-                                <input type="checkbox" name="directoryVisible" id="directoryVisible" {% if user.directory_visible %}checked{% endif %}>
-                                <label for="directoryVisible">Make my profile visible in the alumni directory</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="terms-checkbox">
-                                <input type="checkbox" name="emailNotification" id="emailNotification" {% if user.email_notifications %}checked{% endif %}>
-                                <label for="emailNotification">Receive email notifications about college events and announcements</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact Information -->
-                <div class="edit-form-section slide-in-bottom" style="animation-delay: 0.6s;">
-                    <div class="form-section-title">
-                        <h3><i class="fas fa-address-card"></i> Contact Information</h3>
-                        <i class="fas fa-chevron-down toggle-icon"></i>
-                    </div>
-                    <div class="form-section-content">
-                        <div class="form-group">
-                            <div class="terms-checkbox">
-                                <input type="checkbox" name="showContactInfo" id="showContactInfo" {% if user.show_contact_info %}checked{% endif %}>
-                                <label for="showContactInfo">Make contact information visible to other alumni</label>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <input type="email" name="contactEmail" class="form-control" id="contactEmail" placeholder=" " value="{{ user.contact_email }}">
-                                    <label for="contactEmail" class="form-label">Contact Email (if different)</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <input type="tel" name="contactPhone" class="form-control" id="contactPhone" placeholder=" " value="{{ user.contact_phone }}">
-                                    <label for="contactPhone" class="form-label">Contact Phone (optional)</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <input type="url" name="website" class="form-control" id="website" placeholder=" " value="{{ user.website }}">
-                                    <label for="website" class="form-label">Personal Website (optional)</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <input type="text" name="otherSocial" class="form-control" id="otherSocial" placeholder=" " value="{{ user.other_social }}">
-                                    <label for="otherSocial" class="form-label">Other Social Media (optional)</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="form-actions">
-                    <button type="button" class="btn btn-cancel">Cancel</button>
+                    <button type="button" class="btn btn-cancel"><a href="{% url 'profile' %}">Cancel</a></button>
                     <button type="submit" class="btn btn-accent">Save Profile</button>
                 </div>
             </form>
@@ -309,7 +239,7 @@
             <i class="fas fa-users"></i>
             <span>Directory</span>
         </a>
-        <a href="{% url 'achievements' %}" class="bottom-nav-item">
+        <a href="{% url 'connections' %}" class="bottom-nav-item">
             <i class="fas fa-trophy"></i>
             <span>Achievements</span>
         </a>

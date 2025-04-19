@@ -45,6 +45,7 @@ class User(AbstractUser):
     mentor_bio = models.TextField(blank=True, null=True)
     areas_of_expertise = models.TextField(blank=True, null=True)
     college = models.ForeignKey(College, on_delete=models.SET_NULL, null=True)
+    # college = models.CharField(max_length=255, blank=True)
     graduation_year = models.IntegerField(null=True, blank=True)
     degree = models.CharField(max_length=255, blank=True)
     location = models.CharField(max_length=255, blank=True)
