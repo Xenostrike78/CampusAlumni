@@ -45,13 +45,13 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="text" name="first_name" class="form-control" id="firstName" placeholder=" " value="{{ user.first_name }}">
+                                    <input type="text" required name="first_name" class="form-control" id="firstName" placeholder=" " value="{{ user.first_name }}">
                                     <label for="firstName" class="form-label">First Name</label>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="text" name="last_name" class="form-control" id="lastName" placeholder=" " value="{{ user.last_name }}">
+                                    <input type="text" required name="last_name" class="form-control" id="lastName" placeholder=" " value="{{ user.last_name }}">
                                     <label for="lastName" class="form-label">Last Name</label>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="text" name="degree" class="form-control" id="degree" placeholder=" " value="{{ user.degree }}">
+                                    <input type="text" name="degree" required class="form-control" id="degree" placeholder=" " value="{{ user.degree }}">
                                     <label for="degree" class="form-label">Degree / Field of Study</label>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input type="number" name="gradYear" min="1900" max="2099" class="form-control" id="gradYear" placeholder=" " value="{{ user.graduation_year }}">
+                                    <input type="number" name="gradYear" required min="1900" max="2099" class="form-control" id="gradYear" placeholder=" " value="{{ user.graduation_year }}">
                                     <label for="gradYear" class="form-label">Graduation Year</label>
                                 </div>
                             </div>
