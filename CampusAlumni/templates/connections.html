@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Connections - CampusAlumni{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/connections.css' %}">
+<link rel="stylesheet" href="{% static 'css/directory.css' %}">
+{% endblock %}
+
+{% block content %}
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+        <nav class="navbar">
+            <a href="{% url 'community_feed' %}">
+                <div class="logo">Campus<span>Alumni</span></div>
+            </a>
+            <ul class="nav-links" style="margin-left: auto;">
+                <li><a href="{% url 'community_feed' %}">Community</a></li>
+                <li><a href="{% url 'alumni_directory' %}" class="active">Directory</a></li>
+                <li>
+                    <div class="avatar avatar-sm">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+  </header>
+
+  <!-- Directory Header -->
+  <div class="directory-header">
+    <div class="directory-header-content">
+        <h1 class="directory-title fade-in" style="padding-top: 50px;">Connections</h1>
+        <p class="directory-description fade-in">Connect with thousands of alumni from your college and beyond</p>
+    </div>
+  </div>
+
+
+  <!-- Incoming Requests Section -->
+  <div class="section">
+    <h2>Incoming Requests</h2>
+    {% for incoming in incoming_requests %}
+    <div class="card">
+      {% if incoming.from_user.profile_picture %}
+      <img src="{{ incoming.from_user.profile_picture.url}}" alt="profile" />
+      {% else %}
+      <img src="https://via.placeholder.com/50" alt="profile" />
+      {% endif %}
+      <div class="details">
+        <p class="name">{{ incoming.from_user.first_name }} {{ incoming.from_user.last_name }}</p>
+        <p class="batch">Batch of {{ incoming.from_user.graduation_year }}</p>
+      </div>
+      <div class="actions">
+        <form method="post" action="{% url 'accept_connection_request' incoming.id %}">
+          {% csrf_token %}
+          <button class="accept" type="submit">Accept</button>
+        </form>
+      </div>
+    </div>
+    {% empty %}
+    <p>No incoming requests.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Sent Requests Section -->
+  <div class="section">
+    <h2>Sent Requests</h2>
+    {% for sent in sent_requests %}
+    <div class="card">
+      {% if sent.to_user.profile_picture %}
+      <img src="{{ sent.to_user.profile_picture.url}}" alt="profile" />
+      {% else %}
+      <img src="https://via.placeholder.com/50" alt="profile" />
+      {% endif %}
+      <div class="details">
+        <p class="name">{{ sent.to_user.first_name }} {{ sent.to_user.last_name }}</p>
+        <p class="batch">Batch of {{ sent.to_user.graduation_year }}</p>
+      </div>
+      <div class="actions">
+        <span class="status pending">Pending</span>
+      </div>
+    </div>
+    {% empty %}
+    <p>No sent requests.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="{% url 'community_feed' %}" class="bottom-nav-item">
+        <i class="fas fa-home"></i>
+        <span>Feed</span>
+    </a>
+    <a href="{% url 'alumni_directory' %}" class="bottom-nav-item active">
+        <i class="fas fa-users"></i>
+        <span>Directory</span>
+    </a>
+    <a href="{% url 'connections' %}" class="bottom-nav-item">
+        <i class="fas fa-trophy"></i>
+        <span>Connections</span>
+    </a>
+    <a href="{% url 'profile' %}" class="bottom-nav-item">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+    </a>
+  </nav>
+{% endblock %}

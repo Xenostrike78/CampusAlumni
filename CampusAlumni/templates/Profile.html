@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - CampusAlumni</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/achievements.css' %}">
+</head>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  margin: 0;
+  padding: 40px;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+}
+
+.profile-card {
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.left {
+  flex: 1;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  text-align: center;
+}
+
+.profile-pic {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 20px;
+  background-color: #ccc;
+  border-radius: 12px;
+}
+
+input[type="file"] {
+  display: block;
+  margin: 10px auto;
+}
+
+button {
+  padding: 8px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.verified {
+  margin-top: 15px;
+  color: green;
+  font-weight: bold;
+}
+
+.right {
+  flex: 2;
+  padding: 20px 30px;
+}
+
+.right h2 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.verified-icon {
+  color: blue;
+  font-size: 18px;
+}
+
+.right h3 {
+  margin-top: 30px;
+  color: #333;
+}
+
+</style>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">Campus<span>Alumni</span></div>
+                <ul class="nav-links" style="margin-left: auto;">
+                  <li><a href="{% url 'community_feed' %}">Community</a></li>
+                  <li><a href="{% url 'alumni_directory' %}" class="active">Directory</a></li>
+                  <li>
+                      <div class="avatar avatar-sm">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
+                  </li>
+              </ul>
+            </nav>
+        </div>
+    </header>
+
+
+    <!-- Achievements Header -->
+    <div class="achievements-header">
+        <div class="achievements-header-content">
+            <h1 class="achievements-title fade-in" style="padding-top: 50px;">Profile</h1>
+            <p class="achievements-description fade-in">Track your professional accomplishments and showcase your growth</p>
+        </div>
+    </div>
+
+
+    <!-- Main Section -->
+    <div class="main-container" >
+    <div class="container" style="margin-bottom: 5%;">
+        <div class="profile-card">
+          <!-- Left: Profile Picture & Upload -->
+          <div class="left">
+            <div class="profile-pic">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="{{ user.first_name }} {{ user.last_name }}" style="width: 180px; height: 180px; border-radius: 12px; object-fit: cover;">
+                {% else %}
+                    <div style="width: 180px; height: 180px; background-color: #ccc; border-radius: 12px;"></div>
+                {% endif %}
+                {% if is_own_profile %}
+                <a href="{% url 'edit_profile' %}" class="edit-profile-link" style="display: block; margin-top: 15px; color: #007bff; text-decoration: underline; cursor: pointer;">Edit Profile</a>
+                {% endif %}
+            </div>
+          </div>
+    
+          <!-- Right: Profile Information -->
+          <div class="right">
+            <h2>{{ user.first_name }} {{ user.last_name }} <span class="verified-icon">✔️</span></h2>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Bio:</strong> {{ user.short_bio }}</p>
+            <p><strong>Degree:</strong> {{ user.degree }}</p>
+            <p><strong>Graduation Year:</strong> {{ user.graduation_year }}</p>
+            <p><strong>College:</strong> {% if user.college %}{{ user.college.name }}{% else %}N/A{% endif %}</p>
+            <p><strong>Location:</strong> {{ user.location }}</p>
+            <p><strong>Skills:</strong> {{ user.skills }}</p>
+            <p><strong>Job Role:</strong> {{ user.current_job }}</p>
+            <p><strong>Industry:</strong> {{ user.industry }}</p>
+            <p><strong>Professional Experience:</strong> {{ user.professional_experience }}</p>
+            <p><strong>LinkedIn URL: </strong>
+                {% if user.linkedin_url %} 
+                    <a href="{{ user.linkedin_url }}" target="_blank">Visit LinkedIn</a>
+                {% else %}
+                    N/A
+                {% endif %}
+            </p>
+            <p><strong>Mentor:</strong> {% if user.is_mentor %}Yes{% else %}No{% endif %}</p>
+            <p><strong>Mentor Bio:</strong> {{ user.mentor_bio }}</p>
+            <p><strong>Mentor Expertise:</strong> {{ user.mentor_expertise|join:", " }}</p>
+            <p><strong>Join College Network:</strong> {% if user.join_college_network %}Yes{% else %}No{% endif %}</p>
+            <p><strong>Directory Visible:</strong> {% if user.directory_visible %}Yes{% else %}No{% endif %}</p>
+            <p><strong>Email Notifications:</strong> {% if user.email_notifications %}Yes{% else %}No{% endif %}</p>
+            <p><strong>Show Contact Info:</strong> {% if user.show_contact_info %}Yes{% else %}No{% endif %}</p>
+            <p><strong>Contact Email:</strong> {{ user.contact_email }}</p>
+            <p><strong>Contact Phone:</strong> {{ user.contact_phone }}</p>
+            <p><strong>Website:</strong> 
+                {% if user.website %}
+                    <a href="{{ user.website }}" target="_blank">{{ user.website }}</a>
+                {% else %}
+                    N/A
+                {% endif %}
+            </p>
+            <p><strong>Other Social Media:</strong> {{ user.other_social }}</p>
+            <p><strong>Connections:</strong> {{ total_connections }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <a href="{% url 'community_feed' %}" class="bottom-nav-item">
+          <i class="fas fa-home"></i>
+          <span>Feed</span>
+      </a>
+      <a href="{% url 'alumni_directory' %}" class="bottom-nav-item active">
+          <i class="fas fa-users"></i>
+          <span>Directory</span>
+      </a>
+      <a href="{% url 'connections' %}" class="bottom-nav-item">
+          <i class="fas fa-trophy"></i>
+          <span>Connections</span>
+      </a>
+      <a href="{% url 'profile' %}" class="bottom-nav-item">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+      </a>
+  </nav>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

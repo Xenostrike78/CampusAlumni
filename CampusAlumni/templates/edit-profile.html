@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Profile - CampusAlumni{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="edit-profile-container">
+            <div class="edit-form-header slide-in-top">
+                <h1 class="edit-form-title">Complete Your Profile</h1>
+                <p class="edit-form-description">Help others learn about you and make meaningful connections</p>
+                <div class="edit-form-progress">
+                    <div class="progress-bar" style="width: 30%;"></div>
+                </div>
+            </div>
+
+            <form id="edit-profile-form" method="POST" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Basic Information Section -->
+                <div class="edit-form-section slide-in-bottom">
+                    <div class="form-section-title">
+                        <h3><i class="fas fa-user-circle"></i> Basic Information</h3>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="form-section-content">
+                        <div class="avatar-upload">
+                            <div class="avatar-preview">
+                                {% if user.profile_picture %}
+                                    <img src="{{ user.profile_picture.url }}" alt="{{ user.first_name }} {{ user.last_name }}" style="width: 100px; height: 100px; border-radius: 50%;">
+                                {% else %}
+                                    <i class="fas fa-user" style="font-size: 100px;"></i>
+                                {% endif %}
+                            </div>
+                            <label class="avatar-upload-btn">
+                                <i class="fas fa-camera"></i> Upload Photo
+                                <input type="file" name="profile_picture" accept="image/*">
+                            </label>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" name="first_name" class="form-control" id="firstName" placeholder=" " value="{{ user.first_name }}">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" name="last_name" class="form-control" id="lastName" placeholder=" " value="{{ user.last_name }}">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea name="short_bio" class="form-control" id="bio" rows="4" placeholder=" ">{{ user.short_bio }}</textarea>
+                            <label for="bio" class="form-label">Bio/About Me</label>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" name="location" class="form-control" id="location" placeholder=" " value="{{ user.location }}">
+                                    <label for="location" class="form-label">Location</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="url" name="linkedin_url" class="form-control" id="linkedin" placeholder=" " value="{{ user.linkedin_url }}">
+                                    <label for="linkedin" class="form-label">LinkedIn URL (optional)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education Section -->
+                <div class="edit-form-section slide-in-bottom" style="animation-delay: 0.1s;">
+                    <div class="form-section-title">
+                        <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="form-section-content">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" name="college_name" class="form-control" id="university" placeholder=" " value="{% if user.college %}{{ user.college.name }}{% endif %}">
+                                    <label for="university" class="form-label">College/University Name</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" name="degree" class="form-control" id="degree" placeholder=" " value="{{ user.degree }}">
+                                    <label for="degree" class="form-label">Degree / Field of Study</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="number" name="gradYear" min="1900" max="2099" class="form-control" id="gradYear" placeholder=" " value="{{ user.graduation_year }}">
+                                    <label for="gradYear" class="form-label">Graduation Year</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <select name="eduStatus" class="form-control" id="eduStatus">
+                                        <option value="">Select Status</option>
+                                        <option value="graduated" {% if user.education_status == 'graduated' %}selected{% endif %}>Graduated</option>
+                                        <option value="ongoing" {% if user.education_status == 'ongoing' %}selected{% endif %}>Currently Studying</option>
+                                        <option value="dropout" {% if user.education_status == 'dropout' %}selected{% endif %}>Did Not Complete</option>
+                                    </select>
+                                    <label for="eduStatus" class="form-label">Education Status</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professional Information -->
+                <div class="edit-form-section slide-in-bottom" style="animation-delay: 0.2s;">
+                    <div class="form-section-title">
+                        <h3><i class="fas fa-briefcase"></i> Professional Information</h3>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="form-section-content">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" name="current_role" class="form-control" id="currentRole" placeholder=" " value="{{ user.current_job }}">
+                                    <label for="currentRole" class="form-label">Current Job / Role</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" name="company" class="form-control" id="company" placeholder=" " value="{{ user.company }}">
+                                    <label for="company" class="form-label">Company / Organization</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <select name="industry" class="form-control" id="industry">
+                                <option value="">Select Industry</option>
+                                <option value="tech" {% if user.industry == 'tech' %}selected{% endif %}>Technology</option>
+                                <option value="finance" {% if user.industry == 'finance' %}selected{% endif %}>Finance & Banking</option>
+                                <option value="healthcare" {% if user.industry == 'healthcare' %}selected{% endif %}>Healthcare</option>
+                                <option value="education" {% if user.industry == 'education' %}selected{% endif %}>Education</option>
+                                <option value="marketing" {% if user.industry == 'marketing' %}selected{% endif %}>Marketing & Advertising</option>
+                                <option value="retail" {% if user.industry == 'retail' %}selected{% endif %}>Retail</option>
+                                <option value="manufacturing" {% if user.industry == 'manufacturing' %}selected{% endif %}>Manufacturing</option>
+                                <option value="consulting" {% if user.industry == 'consulting' %}selected{% endif %}>Consulting</option>
+                                <option value="nonprofit" {% if user.industry == 'nonprofit' %}selected{% endif %}>Non-profit</option>
+                                <option value="government" {% if user.industry == 'government' %}selected{% endif %}>Government</option>
+                                <option value="other" {% if user.industry == 'other' %}selected{% endif %}>Other</option>
+                            </select>
+                            <label for="industry" class="form-label">Industry</label>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea name="professional_experience" class="form-control" id="experience" rows="4" placeholder=" ">{{ user.professional_experience }}</textarea>
+                            <label for="experience" class="form-label">Professional Experience</label>
+                        </div>
+
+                        <h4 class="mb-2">Skills</h4>
+                        <div class="skill-input-group">
+                            <input type="text" name="skills" class="form-control" id="skillInput" placeholder="Add a skill..." value="{{ user.skills }}">
+                            <button type="button" class="btn btn-add"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <div class="added-skills">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certifications -->
+                <!-- Removed certifications section as per user request -->
+
+                <!-- Mentorship Settings -->
+                <div class="edit-form-section slide-in-bottom" style="animation-delay: 0.4s;">
+                    <div class="form-section-title">
+                        <h3><i class="fas fa-hands-helping"></i> Mentorship Settings</h3>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="form-section-content">
+                        <div class="form-group">
+                            <div class="terms-checkbox">
+                                <input type="checkbox" name="mentorOptIn" id="mentorOptIn" {% if user.is_mentor %}checked{% endif %}>
+                                <label for="mentorOptIn">I am willing to be a mentor to other alumni</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <textarea name="mentorBio" class="form-control" id="mentorBio" rows="3" placeholder=" ">{{ user.mentor_bio }}</textarea>
+                            <label for="mentorBio" class="form-label">Mentor Bio / How I Can Help</label>
+                        </div>
+
+                        <div class="form-group">
+                            <select name="mentorExpertise" class="form-control" id="mentorExpertise" multiple>
+                                <option value="career" {% if 'career' in user.mentor_expertise %}selected{% endif %}>Career Guidance</option>
+                                <option value="industry" {% if 'industry' in user.mentor_expertise %}selected{% endif %}>Industry Insights</option>
+                                <option value="technical" {% if 'technical' in user.mentor_expertise %}selected{% endif %}>Technical Skills</option>
+                                <option value="startup" {% if 'startup' in user.mentor_expertise %}selected{% endif %}>Startup Advice</option>
+                                <option value="grad" {% if 'grad' in user.mentor_expertise %}selected{% endif %}>Graduate School</option>
+                                <option value="interview" {% if 'interview' in user.mentor_expertise %}selected{% endif %}>Interview Preparation</option>
+                                <option value="resumecv" {% if 'resumecv' in user.mentor_expertise %}selected{% endif %}>Resume/CV Review</option>
+                            </select>
+                            <label for="mentorExpertise" class="form-label">Areas of Expertise (select multiple)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Settings -->
+                <div class="edit-form-section slide-in-bottom" style="animation-delay: 0.5s;">
+                    <div class="form-section-title">
+                        <h3><i class="fas fa-users"></i> College Network Settings</h3>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="form-section-content">
+                        <div class="form-group">
+                            <div class="terms-checkbox">
+                                <input type="checkbox" name="networkOptIn" id="networkOptIn" {% if user.join_college_network %}checked{% endif %}>
+                                <label for="networkOptIn">Join my college's alumni network</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="terms-checkbox">
+                                <input type="checkbox" name="directoryVisible" id="directoryVisible" {% if user.directory_visible %}checked{% endif %}>
+                                <label for="directoryVisible">Make my profile visible in the alumni directory</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="terms-checkbox">
+                                <input type="checkbox" name="emailNotification" id="emailNotification" {% if user.email_notifications %}checked{% endif %}>
+                                <label for="emailNotification">Receive email notifications about college events and announcements</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="edit-form-section slide-in-bottom" style="animation-delay: 0.6s;">
+                    <div class="form-section-title">
+                        <h3><i class="fas fa-address-card"></i> Contact Information</h3>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="form-section-content">
+                        <div class="form-group">
+                            <div class="terms-checkbox">
+                                <input type="checkbox" name="showContactInfo" id="showContactInfo" {% if user.show_contact_info %}checked{% endif %}>
+                                <label for="showContactInfo">Make contact information visible to other alumni</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="email" name="contactEmail" class="form-control" id="contactEmail" placeholder=" " value="{{ user.contact_email }}">
+                                    <label for="contactEmail" class="form-label">Contact Email (if different)</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="tel" name="contactPhone" class="form-control" id="contactPhone" placeholder=" " value="{{ user.contact_phone }}">
+                                    <label for="contactPhone" class="form-label">Contact Phone (optional)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="url" name="website" class="form-control" id="website" placeholder=" " value="{{ user.website }}">
+                                    <label for="website" class="form-label">Personal Website (optional)</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" name="otherSocial" class="form-control" id="otherSocial" placeholder=" " value="{{ user.other_social }}">
+                                    <label for="otherSocial" class="form-label">Other Social Media (optional)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-accent">Save Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="{% url 'community_feed' %}" class="bottom-nav-item">
+            <i class="fas fa-home"></i>
+            <span>Feed</span>
+        </a>
+        <a href="{% url 'alumni_directory' %}" class="bottom-nav-item">
+            <i class="fas fa-users"></i>
+            <span>Directory</span>
+        </a>
+        <a href="{% url 'achievements' %}" class="bottom-nav-item">
+            <i class="fas fa-trophy"></i>
+            <span>Achievements</span>
+        </a>
+        <a href="#" class="bottom-nav-item active">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dict_get %}
+
+{% block title %}Alumni Directory - CampusAlumni{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/directory.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="{% url 'community_feed' %}">
+                    <div class="logo">Campus<span>Alumni</span></div>
+                </a>
+                <ul class="nav-links" style="margin-left: auto;">
+                    <li><a href="{% url 'community_feed' %}">Community</a></li>
+                    <li><a href="{% url 'alumni_directory' %}" class="active">Directory</a></li>
+                    <li>
+                        <div class="avatar avatar-sm">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Directory Header -->
+    <div class="directory-header">
+        <div class="directory-header-content">
+            <h1 class="directory-title fade-in" style="padding-top: 50px;">Alumni Directory</h1>
+            <p class="directory-description fade-in">Connect with thousands of alumni from your college and beyond</p>
+        </div>
+    </div>
+
+    <!-- Search and Filters Form -->
+    <div class="container" style="margin-bottom: 20px;">
+        <form method="get" action="{% url 'alumni_directory' %}" class="search-container" style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <input type="text" name="name" value="{{ Name }}" class="search-input" placeholder="Search by Name " style="flex: 1 1 300px; border-radius: 5px; padding-left: 10px;">
+            <select name="university" class="form-control" style="padding: 5px;">
+                <option value="">All Universities</option>
+                {% for college in distinct_colleges %}
+                    <option value="{{ college }}" {% if university == college %}selected{% endif %}>{{ college }}</option>
+                {% endfor %}
+            </select>
+            <select name="industry" class="form-control" style="padding: 5px;">
+                <option value="">All Industries</option>
+                {% for ind in distinct_industries %}
+                    <option value="{{ ind }}" {% if industry == ind %}selected{% endif %}>{{ ind }}</option>
+                {% endfor %}
+            </select>
+            <select name="graduation_year" class="form-control" style="padding: 5px;">
+                <option value="">All Graduation Years</option>
+                <optgroup label="Recent 5 Years">
+                    {% for year in recent_5_years %}
+                        <option value="{{ year }}" {% if graduation_year == year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Previous 10 Years">
+                    {% for year in previous_10_years %}
+                        <option value="{{ year }}" {% if graduation_year == year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
+                </optgroup>
+                <option value="before-{{ previous_10_years|last|add:'-1' }}" {% if graduation_year == 'before-'|add:previous_10_years|last|add:'-1' %}selected{% endif %}>Before {{ previous_10_years|last|add:'-1' }}</option>
+            </select>
+            <button type="submit" class="btn btn-search"><i class="fas fa-search"></i> Search</button>
+        </form>
+    </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Alumni List View -->
+            <div class="alumni-list">
+                {% for alum in alumni %}
+                <div class="alumni-list-item" style="border-bottom: 1px solid #ccc; padding: 10px 0; display: flex; align-items: center;">
+                    <div class="alumni-list-avatar" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden;">
+                        {% if alum.profile_picture %}
+                            <img src="{{ alum.profile_picture.url }}" alt="{{ alum.first_name }} {{ alum.last_name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                            <div style="width: 50px; height: 50px; background-color: #007bff; color: white; font-weight: bold; font-size: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                {{ alum.first_name|slice:":1" }}{{ alum.last_name|slice:":1" }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="alumni-list-content" style="margin-left: 15px; flex-grow: 1;">
+                        <div class="alumni-list-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div class="alumni-list-name-title">
+                                <h3 class="alumni-list-name" style="margin: 0;">{{ alum.first_name }} {{ alum.last_name }}</h3>
+                                <p class="alumni-list-title" style="margin: 0; font-size: 14px; color: #555;">
+                                    {{ alum.current_job }} | {{ alum.college.name }}, {{ alum.graduation_year }} | {{ alum.industry }}
+                                </p>
+                            </div>
+                            <div class="alumni-list-location" style="font-size: 14px; color: #777;">
+                                <i class="fas fa-map-marker-alt"></i> {{ alum.location }}
+                            </div>
+                        </div>
+                            <div class="alumni-list-actions" style="margin-top: 8px;">
+                                {% if connection_statuses|dict_get:alum.id == 'pending' %}
+                                    <button class="btn btn-sm btn-disabled" disabled>Pending</button>
+                                {% elif connection_statuses|dict_get:alum.id == 'accepted' %}
+                                    <button class="btn btn-sm btn-disabled" disabled>Connected</button>
+                                {% else %}
+                                    <form method="post" action="{% url 'send_connection_request' alum.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm" style="margin-right: 5px;">Connect</button>
+                                    </form>
+                                {% endif %}
+                                <a href="{% url 'profile_with_id' alum.id %}" class="btn btn-sm btn-outline">View Profile</a>
+                            </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No alumni found matching your criteria.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="{% url 'community_feed' %}" class="bottom-nav-item">
+            <i class="fas fa-home"></i>
+            <span>Feed</span>
+        </a>
+        <a href="{% url 'alumni_directory' %}" class="bottom-nav-item active">
+            <i class="fas fa-users"></i>
+            <span>Directory</span>
+        </a>
+        <a href="{% url 'connections' %}" class="bottom-nav-item">
+            <i class="fas fa-trophy"></i>
+            <span>Connections</span>
+        </a>
+        <a href="{% url 'profile' %}" class="bottom-nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+{% endblock %}

@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}CampusAlumni - Connect with your College Network{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">Campus<span>Alumni</span></div>
+                <ul class="nav-links">
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}" class="btn btn-accent">Sign Up</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="accent-circle accent-circle-1"></div>
+        <div class="accent-circle accent-circle-2"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Connect with Your College Community</h1>
+                <p class="hero-subtitle">Join thousands of alumni building meaningful connections, sharing opportunities, and growing their professional network.</p>
+                <div class="hero-cta">
+                    <a href="{% url 'signup' %}" class="btn btn-accent hero-btn">Join Now</a>
+                    <a href="#features" class="btn btn-outline hero-btn">Learn More</a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                <path d="M249.5,25c30.1,0,59.4,5.9,87,17.5c26.6,11.3,50.5,27.4,71,48c20.5,20.5,36.7,44.4,48,71c11.6,27.6,17.5,56.9,17.5,87s-5.9,59.4-17.5,87c-11.3,26.6-27.4,50.5-48,71c-20.5,20.5-44.4,36.7-71,48c-27.6,11.6-56.9,17.5-87,17.5s-59.4-5.9-87-17.5c-26.6-11.3-50.5-27.4-71-48c-20.5-20.5-36.7-44.4-48-71c-11.6-27.6-17.5-56.9-17.5-87s5.9-59.4,17.5-87c11.3-26.6,27.4-50.5,48-71c20.5-20.5,44.4-36.7,71-48C190.1,30.9,219.4,25,249.5,25z" fill="#4A2C40" opacity="0.1"/>
+                <path d="M335.3,112.4c-23.9-13.2-55.1-15.7-82.2-2.2c-38.7,19.2-49.3,60.4-44.6,98.1c2.3,18.6,11.1,49.7,35.1,51.8c10.2,0.9,19.2-5.5,22.6-14.4c3.1-8.1,1.8-17.3,1.9-25.8c0.1-8.9,0.5-17.9,1.1-26.8c0,0,37.1,2.3,37.1,2.3c0,0,1.7,26.6,3.6,39.8c1.3,9,8.6,28.5,21,23.3c12.5-5.2,16.9-23.6,20.2-35.2c6.9-24.5,8.8-52.1-2.8-75.3C343.2,137.8,333.3,124.5,335.3,112.4z" fill="#FFD700" opacity="0.6"/>
+                <circle cx="250" cy="90" r="40" fill="#FFFFFF"/>
+                <path d="M250,130c-77.2,0-140,62.8-140,140c0,77.2,62.8,140,140,140c77.2,0,140-62.8,140-140C390,192.8,327.2,130,250,130z M370,270c0,66.3-53.7,120-120,120c-66.3,0-120-53.7-120-120c0-66.3,53.7-120,120-120C316.3,150,370,203.7,370,270z" fill="#FFFFFF"/>
+                <path d="M190,250h120v40H190V250z M190,200h120v40H190V200z M190,300h120v40H190V300z" fill="#FFD700"/>
+                <circle cx="250" cy="90" r="20" fill="#4A2C40"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="features-title slide-in-top">Why Join CampusAlumni?</h2>
+            <div class="features-grid">
+                <div class="feature-card stagger-item">
+                    <i class="fas fa-network-wired feature-icon"></i>
+                    <h3 class="feature-title">Connect & Network</h3>
+                    <p class="feature-desc">Find and connect with alumni from your college or university, no matter where they are in the world.</p>
+                </div>
+                <div class="feature-card stagger-item">
+                    <i class="fas fa-briefcase feature-icon"></i>
+                    <h3 class="feature-title">Career Opportunities</h3>
+                    <p class="feature-desc">Discover job opportunities shared by fellow alumni and expand your professional horizons.</p>
+                </div>
+                <div class="feature-card stagger-item">
+                    <i class="fas fa-user-graduate feature-icon"></i>
+                    <h3 class="feature-title">Mentorship</h3>
+                    <p class="feature-desc">Find mentors or become one yourself! Share knowledge and help others succeed.</p>
+                </div>
+                <div class="feature-card stagger-item">
+                    <i class="fas fa-calendar-alt feature-icon"></i>
+                    <h3 class="feature-title">Events & Reunions</h3>
+                    <p class="feature-desc">Stay updated on college events, alumni meetups, and reunions in your area.</p>
+                </div>
+                <div class="feature-card stagger-item">
+                    <i class="fas fa-medal feature-icon"></i>
+                    <h3 class="feature-title">Showcase Achievements</h3>
+                    <p class="feature-desc">Display your professional accomplishments and academic achievements.</p>
+                </div>
+                <div class="feature-card stagger-item">
+                    <i class="fas fa-comments feature-icon"></i>
+                    <h3 class="feature-title">Community Discussions</h3>
+                    <p class="feature-desc">Engage in meaningful conversations with alumni who share your interests and background.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="testimonials-title slide-in-top">What Our Users Say</h2>
+            <div class="testimonials-container">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>CampusAlumni helped me reconnect with classmates and find mentors in my industry. It's been invaluable for my career growth!</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SA</div>
+                        <div class="testimonial-info">
+                            <h4>Sarah A.</h4>
+                            <p class="testimonial-role">Marketing Director, Class of 2015</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>Through this platform, I've hired three talented alumni for my startup. The quality of connections here is unmatched.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MJ</div>
+                        <div class="testimonial-info">
+                            <h4>Michael J.</h4>
+                            <p class="testimonial-role">Tech Entrepreneur, Class of 2012</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>As a recent graduate, the mentorship I've received through CampusAlumni has been instrumental in launching my career.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">RL</div>
+                        <div class="testimonial-info">
+                            <h4>Rebecca L.</h4>
+                            <p class="testimonial-role">Software Engineer, Class of 2022</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="statistics">
+        <div class="container">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="50000">50,000+</div>
+                    <div class="stat-label">Active Alumni</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="500">500+</div>
+                    <div class="stat-label">Universities</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="2500">2,500+</div>
+                    <div class="stat-label">Mentors</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="10000">10,000+</div>
+                    <div class="stat-label">Connections Made</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Ready to Connect with Your Alumni Network?</h2>
+            <p class="cta-text">Join CampusAlumni today and start building meaningful connections that can shape your future.</p>
+            <div class="cta-buttons">
+                <a href="{% url 'signup' %}" class="btn btn-accent pulse">Sign Up Now</a>
+                <a href="{% url 'login' %}" class="btn">Already a Member? Login</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h3 class="footer-title">CampusAlumni</h3>
+                    <p>Connecting college communities worldwide</p>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'alumni_directory' %}">Alumni Directory</a></li>
+                        <li><a href="#">Mentorship</a></li>
+                        <li><a href="{% url 'community_feed' %}">Community</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Resources</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Connect</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 CampusAlumni. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+{% endblock %}

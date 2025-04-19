@@ -1,0 +1,127 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+.logo-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between logo and navbar */
+}
+
+.header .icon {
+  font-size: 28px; /* Larger icon */
+}
+
+.header h1 {
+  font-size: 24px; /* Larger header text */
+  margin: 0;
+}
+
+/* Section Styles */
+.section {
+  padding: 20px;
+  max-width: 1200px; /* Optional: Limit content width */
+  margin: 0 auto; /* Center the content */
+}
+
+.section h2 {
+  font-size: 20px; /* Larger section title */
+  margin-bottom: 15px;
+  color: #003366;
+}
+
+/* Card Styles */
+.card {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Float effect on hover */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  border-radius: 50%;
+  width: 60px; /* Slightly larger profile image */
+  height: 60px;
+}
+
+.details {
+  flex: 1;
+  margin-left: 15px;
+}
+
+.details .name {
+  font-weight: bold;
+  margin: 0;
+  font-size: 16px; /* Larger name text */
+}
+
+.details .batch {
+  font-size: 14px; /* Slightly larger batch text */
+  color: #666;
+  margin: 4px 0 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px; /* Increased gap between buttons */
+}
+
+button {
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px; /* Slightly larger buttons */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button.accept {
+  background-color: #28a745;
+}
+
+button.accept:hover {
+  background-color: #218838;
+}
+
+button.ignore {
+  background-color: #6c757d;
+}
+
+button.ignore:hover {
+  background-color: #5a6268;
+}
+
+.status {
+  font-size: 14px; /* Slightly larger status text */
+  font-weight: bold;
+  padding: 6px 10px; /* Slightly larger padding */
+  border-radius: 4px;
+  color: white;
+}
+
+.status.pending {
+  background-color: orange;
+}
+
+.status.accepted {
+  background-color: green;
+}
+
+.status.declined {
+  background-color: red;
+}

@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Community Feed - CampusAlumni{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/feed.css' %}">
+    <style>
+        .post-form {
+            flex: 1;
+            border: none;
+            background-color: var(--light-gray);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            cursor: pointer;
+            transition: background-color var(--transition-normal);
+        }
+    
+        .post-form textarea,
+        .post-form input[type="text"],
+        .post-form input[type="file"] {
+            width: 100%;
+            padding: 12px 16px;
+            margin-top: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            background-color: #fafafa;
+            transition: border-color 0.2s;
+        }
+    
+        .post-form textarea:focus,
+        .post-form input[type="text"]:focus {
+            border-color: #0066ff;
+            outline: none;
+            background-color: #fff;
+        }
+    
+        .post-form input[type="file"] {
+            padding: 10px;
+            background-color: #f5f5f5;
+        }
+    
+        .post-form button {
+            background-color: #0066ff;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.2s ease;
+        }
+    
+        .post-form button:hover {
+            background-color: var(--medium-gray);
+        }
+    
+        .post-form button:active {
+            background-color: #0041a8;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">Campus<span>Alumni</span></div>
+                <ul class="nav-links">
+                    <li><a href="{% url 'community_feed' %}" class="active">Community</a></li>
+                    <li><a href="{% url 'alumni_directory' %}">Directory</a></li>
+                    <li>
+                        <div class="avatar avatar-sm">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Feed Header -->
+    <div class="feed-header">
+        <div class="feed-header-content">
+            <h1 class="feed-title fade-in"  style="padding-top: 50px;">Community Feed</h1>
+            <p class="feed-description fade-in">Stay updated with your college network and alumni community</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" style="padding-left: 1px; margin: 3px;">
+        <div class="container" style="margin-left: 12%;">
+            <div class="feed-layout">
+                <!-- Left Sidebar -->
+                <div class="feed-sidebar" style=" width: 20vw;">
+
+                    <!-- Suggested Alumni -->
+                    <div class="sidebar-card slide-in-left" style="animation-delay: 0.1s;">
+                        <h3 class="sidebar-title">People You May Know</h3>
+                        <div class="suggested-alumni-list">
+                            {% for person in people_you_may_know %}
+                            <div class="suggested-alumni">
+                                <div class="suggested-alumni-avatar">
+                                    {% if person.profile_picture %}
+                                        <img src="{{ person.profile_picture.url }}" alt="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%;">
+                                    {% else %}
+                                        {{ person.first_name|slice:":1" }}{{ person.last_name|slice:":1" }}
+                                    {% endif %}
+                                </div>
+                                <div class="suggested-alumni-info">
+                                    <div class="suggested-alumni-name">{{ person.full_name }}</div>
+                                    <div class="suggested-alumni-title">{{ person.college.name }}, '{{ person.graduation_year|stringformat:"02d" }}</div>
+                                </div>
+                                {% if sent_requests.person.id == 'pending' %}
+                                    <button class="suggested-alumni-action" disabled>Pending</button>
+                                {% else %}
+                                    <form method="post" action="{% url 'send_connection_request' person.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="suggested-alumni-action">Connect</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                            {% empty %}
+                                <p>No suggestions available.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Main Feed -->
+                <div class="main-feed">
+                    <!-- Create Post -->
+                    <div class="create-post-card slide-in-top" >
+                        <div class="create-post-header">
+                            <div class="create-post-avatar">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
+                            <form method="POST" enctype="multipart/form-data" class="post-form">
+                                {% csrf_token %}
+                                <div>
+                                    <textarea name="content" placeholder="What's on your mind?" rows="3" required></textarea>
+                                </div>
+                                <div>
+                                    <input type="text" name="hashtags" placeholder="Add hashtags (optional)">
+                                </div>
+                                <div>
+                                    <input type="file" name="media" accept="image/*,video/*">
+                                </div>
+                                <div class="create-post-actions">
+                                    <button type="submit" class="post-action-btn"> <i class="fas fa-image"></i> Post</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Post Filters -->
+                    <div class="post-filter slide-in-top" style="animation-delay: 0.1s;">
+                        <a href="{% url 'community_feed' %}?filter=all" class="post-filter-option {% if filter_option == 'all' %}active{% endif %}">All</a>
+                        <a href="{% url 'community_feed' %}?filter=my_college" class="post-filter-option {% if filter_option == 'my_college' %}active{% endif %}">My College</a>
+                        <a href="{% url 'community_feed' %}?filter=my_connections" class="post-filter-option {% if filter_option == 'my_connections' %}active{% endif %}">My Connections</a>
+                        <div class="post-filter-option">Recommended</div>
+                    </div>
+
+                    <!-- Feed Posts -->
+                    <div class="feed-posts" style="width: 850px;">
+                        {% for post in posts %}
+                            <div class="feed-post slide-in-bottom" style="animation-delay: 0.1s;">
+                                <div class="post-header">
+                                    <div class="post-avatar">{{ post.user.first_name|slice:":1" }}{{ post.user.last_name|slice:":1" }}</div>
+                                    <div class="post-info">
+                                        <span class="post-author">{{ post.user.full_name }}</span>
+                                        <div class="post-meta">
+                                            <span>{{ post.user.current_job }}</span>
+                                            <span>&bull;</span>
+                                            <span>{{ post.created_at|timesince }} ago</span>
+                                            <span>&bull;</span>
+                                            <span class="post-network">{{ post.user.college.name }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="post-options">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </div>
+                                </div>
+                                <div class="post-content">
+                                    <div class="post-text">
+                                        {{ post.content }}
+                                    </div>
+                                    <div class="post-hashtags">
+                                        {% for tag in post.get_hashtags_list %}
+                                            <a href="#" class="post-hashtag">#{{ tag }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <!-- Comments section can be added here -->
+                            </div>
+                        {% empty %}
+                            <p>No posts to show.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="{% url 'community_feed' %}" class="bottom-nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Feed</span>
+        </a>
+        <a href="{% url 'alumni_directory' %}" class="bottom-nav-item">
+            <i class="fas fa-users"></i>
+            <span>Directory</span>
+        </a>
+        <a href="{% url 'connections' %}" class="bottom-nav-item">
+            <i class="fas fa-trophy"></i>
+            <span>Connections</span>
+        </a>
+        <a href="{% url 'profile' %}" class="bottom-nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+{% endblock %}

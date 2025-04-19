@@ -1,0 +1,447 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Achievements - CampusAlumni{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/achievements.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="{% url 'community_feed' %}">
+                    <div class="logo">Campus<span>Alumni</span></div>
+                </a>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search here" style=" width: 400px; border-radius: 5px; padding-left: 30px;">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="{% url 'community_feed' %}">Community</a></li>
+                    <li><a href="{% url 'alumni_directory' %}">Directory</a></li>
+                    <li>
+                        <div class="avatar avatar-sm">JD</div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Achievements Header -->
+    <div class="achievements-header">
+        <div class="achievements-header-content">
+            <h1 class="achievements-title fade-in" style="padding-top: 50px;">Your Achievements</h1>
+            <p class="achievements-description fade-in">Track your professional accomplishments and showcase your growth</p>
+            <div class="achievement-stats fade-in">
+                <div class="achievement-stat">
+                    <div class="achievement-stat-number">12</div>
+                    <div class="achievement-stat-label">Achievements</div>
+                </div>
+                <div class="achievement-stat">
+                    <div class="achievement-stat-number">5</div>
+                    <div class="achievement-stat-label">Badges</div>
+                </div>
+                <div class="achievement-stat">
+                    <div class="achievement-stat-number">3</div>
+                    <div class="achievement-stat-label">Certificates</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Achievements Tabs -->
+            <div class="achievements-tabs slide-in-top">
+                <div class="achievements-tab active" data-tab="all">All</div>
+                <div class="achievements-tab" data-tab="professional">Professional</div>
+                <div class="achievements-tab" data-tab="education">Education</div>
+                <div class="achievements-tab" data-tab="community">Community</div>
+                <div class="achievements-tab" data-tab="badges">Badges</div>
+            </div>
+
+            <!-- Achievements Dashboard -->
+            <div class="achievements-dashboard slide-in-top" style="animation-delay: 0.2s;">
+                <div class="achievement-levels">
+                    <div class="level">
+                        <div class="level-indicator">
+                            <div class="level-number">3</div>
+                        </div>
+                        <div class="level-progress">
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 65%;"></div>
+                            </div>
+                            <div class="progress-text">65% to Level 4</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="achievement-summary">
+                    <div class="summary-item">
+                        <i class="fas fa-fire"></i>
+                        <div class="summary-text">
+                            <div class="summary-title">12/20</div>
+                            <div class="summary-desc">Achievements Completed</div>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-star"></i>
+                        <div class="summary-text">
+                            <div class="summary-title">385</div>
+                            <div class="summary-desc">Total Points</div>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-award"></i>
+                        <div class="summary-text">
+                            <div class="summary-title">Top 15%</div>
+                            <div class="summary-desc">Rank Among Alumni</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Achievement -->
+            <div class="featured-achievement slide-in-bottom">
+                <div class="featured-badge">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <div class="featured-content">
+                    <div class="featured-header">
+                        <h3 class="featured-title">Featured Achievement</h3>
+                        <div class="featured-date">Earned Jul 15, 2023</div>
+                    </div>
+                    <h2 class="featured-name">Networking Champion</h2>
+                    <p class="featured-description">
+                        Congratulations! You've connected with over 50 alumni and actively participated in 10+ networking events. Your engagement is strengthening the alumni community.
+                    </p>
+                    <div class="featured-footer">
+                        <div class="featured-points">+50 points</div>
+                        <button class="btn btn-sm btn-accent">Share <i class="fas fa-share-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Achievements -->
+            <div class="achievements-section slide-in-bottom" style="animation-delay: 0.2s;">
+                <h2 class="section-title">Recent Achievements</h2>
+                <div class="achievements-grid">
+                    <!-- Achievement 1 -->
+                    <div class="achievement-card stagger-item">
+                        <div class="achievement-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="achievement-content">
+                            <h3 class="achievement-name">Career Milestone</h3>
+                            <p class="achievement-description">Reached a significant career promotion or position</p>
+                            <div class="achievement-meta">
+                                <span class="achievement-date">Jul 2, 2023</span>
+                                <span class="achievement-points">+30 points</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Achievement 2 -->
+                    <div class="achievement-card stagger-item">
+                        <div class="achievement-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <div class="achievement-content">
+                            <h3 class="achievement-name">Certified Professional</h3>
+                            <p class="achievement-description">Earned a professional certification in your field</p>
+                            <div class="achievement-meta">
+                                <span class="achievement-date">Jun 18, 2023</span>
+                                <span class="achievement-points">+25 points</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Achievement 3 -->
+                    <div class="achievement-card stagger-item">
+                        <div class="achievement-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <div class="achievement-content">
+                            <h3 class="achievement-name">Mentor Match</h3>
+                            <p class="achievement-description">Successfully mentored 3 fellow alumni</p>
+                            <div class="achievement-meta">
+                                <span class="achievement-date">Jun 5, 2023</span>
+                                <span class="achievement-points">+40 points</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Achievement 4 -->
+                    <div class="achievement-card stagger-item">
+                        <div class="achievement-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="achievement-content">
+                            <h3 class="achievement-name">Alumni Scholar</h3>
+                            <p class="achievement-description">Completed an additional degree or educational program</p>
+                            <div class="achievement-meta">
+                                <span class="achievement-date">May 22, 2023</span>
+                                <span class="achievement-points">+35 points</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Achievement 5 -->
+                    <div class="achievement-card stagger-item">
+                        <div class="achievement-icon">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                        <div class="achievement-content">
+                            <h3 class="achievement-name">Community Contributor</h3>
+                            <p class="achievement-description">Made 25+ valuable contributions to community discussions</p>
+                            <div class="achievement-meta">
+                                <span class="achievement-date">May 10, 2023</span>
+                                <span class="achievement-points">+20 points</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Achievement 6 -->
+                    <div class="achievement-card stagger-item">
+                        <div class="achievement-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="achievement-content">
+                            <h3 class="achievement-name">Network Builder</h3>
+                            <p class="achievement-description">Connected with 25 alumni from your university</p>
+                            <div class="achievement-meta">
+                                <span class="achievement-date">Apr 28, 2023</span>
+                                <span class="achievement-points">+15 points</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Badges Section -->
+            <div class="badges-section slide-in-bottom" style="animation-delay: 0.3s;">
+                <h2 class="section-title">Your Badges</h2>
+                <div class="badges-container">
+                    <div class="badge-item earned">
+                        <div class="badge-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="badge-name">Early Adopter</div>
+                    </div>
+                    <div class="badge-item earned">
+                        <div class="badge-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="badge-name">Connector</div>
+                    </div>
+                    <div class="badge-item earned">
+                        <div class="badge-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="badge-name">Knowledge Seeker</div>
+                    </div>
+                    <div class="badge-item earned">
+                        <div class="badge-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="badge-name">Engaging Communicator</div>
+                    </div>
+                    <div class="badge-item earned">
+                        <div class="badge-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="badge-name">Innovator</div>
+                    </div>
+                    <div class="badge-item locked">
+                        <div class="badge-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="badge-name">Global Ambassador</div>
+                        <div class="badge-lock">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                    <div class="badge-item locked">
+                        <div class="badge-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div class="badge-name">Public Speaker</div>
+                        <div class="badge-lock">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                    <div class="badge-item locked">
+                        <div class="badge-icon">
+                            <i class="fas fa-pen"></i>
+                        </div>
+                        <div class="badge-name">Content Creator</div>
+                        <div class="badge-lock">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Milestones Timeline -->
+            <div class="achievements-timeline slide-in-bottom" style="animation-delay: 0.4s;">
+                <h2 class="section-title">Achievement Timeline</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">Jul 2023</div>
+                        <div class="timeline-content">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <h3>Networking Champion</h3>
+                                <p>Connected with 50+ alumni and participated in 10+ events</p>
+                                <div class="timeline-badge">
+                                    <i class="fas fa-medal"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Jun 2023</div>
+                        <div class="timeline-content">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <h3>Certified Professional</h3>
+                                <p>Earned Project Management Professional (PMP) certification</p>
+                                <div class="timeline-badge">
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">May 2023</div>
+                        <div class="timeline-content">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <h3>Alumni Scholar</h3>
+                                <p>Completed Master's degree in Business Analytics</p>
+                                <div class="timeline-badge">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Apr 2023</div>
+                        <div class="timeline-content">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <h3>Career Milestone</h3>
+                                <p>Promoted to Senior Project Manager</p>
+                                <div class="timeline-badge">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievement Goals -->
+            <div class="achievements-goals slide-in-bottom" style="animation-delay: 0.5s;">
+                <h2 class="section-title">Achievement Goals</h2>
+                <div class="goals-grid">
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <div class="goal-icon">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="circular-progress" style="--progress: 50%;">
+                                    <div class="inner-circle">50%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="goal-title">Become a Mentor</h3>
+                        <p class="goal-description">Mentor 5 fellow alumni through the mentorship program</p>
+                        <div class="goal-steps">
+                            <div class="step completed">Sign up as a mentor</div>
+                            <div class="step completed">Complete mentor training</div>
+                            <div class="step in-progress">Mentor 3 of 5 alumni</div>
+                            <div class="step">Receive positive feedback</div>
+                        </div>
+                        <div class="goal-reward">
+                            <i class="fas fa-award"></i> Reward: Mentor Badge + 50 points
+                        </div>
+                    </div>
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <div class="goal-icon">
+                                <i class="fas fa-bullhorn"></i>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="circular-progress" style="--progress: 20%;">
+                                    <div class="inner-circle">20%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="goal-title">Community Leader</h3>
+                        <p class="goal-description">Organize or speak at an alumni event</p>
+                        <div class="goal-steps">
+                            <div class="step completed">Propose an event idea</div>
+                            <div class="step">Organize event details</div>
+                            <div class="step">Recruit participants</div>
+                            <div class="step">Host successful event</div>
+                        </div>
+                        <div class="goal-reward">
+                            <i class="fas fa-award"></i> Reward: Leader Badge + 75 points
+                        </div>
+                    </div>
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <div class="goal-icon">
+                                <i class="fas fa-pen-fancy"></i>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="circular-progress" style="--progress: 0%;">
+                                    <div class="inner-circle">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="goal-title">Content Creator</h3>
+                        <p class="goal-description">Share your expertise through articles or posts</p>
+                        <div class="goal-steps">
+                            <div class="step">Write first professional article</div>
+                            <div class="step">Share on alumni platform</div>
+                            <div class="step">Receive 50+ engagements</div>
+                            <div class="step">Create 5 valuable content pieces</div>
+                        </div>
+                        <div class="goal-reward">
+                            <i class="fas fa-award"></i> Reward: Creator Badge + 60 points
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="{% url 'community_feed' %}" class="bottom-nav-item">
+            <i class="fas fa-home"></i>
+            <span>Feed</span>
+        </a>
+        <a href="{% url 'alumni_directory' %}" class="bottom-nav-item">
+            <i class="fas fa-users"></i>
+            <span>Directory</span>
+        </a>
+        <a href="{% url 'achievements' %}" class="bottom-nav-item active">
+            <i class="fas fa-trophy"></i>
+            <span>Connections</span>
+        </a>
+        <a href="{% url 'profile' %}" class="bottom-nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
