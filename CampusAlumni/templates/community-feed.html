@@ -6,62 +6,92 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/feed.css' %}">
     <style>
-        .post-form {
-            flex: 1;
-            border: none;
-            background-color: var(--light-gray);
-            border-radius: var(--radius-md);
-            padding: var(--spacing-md);
-            cursor: pointer;
-            transition: background-color var(--transition-normal);
-        }
-    
-        .post-form textarea,
-        .post-form input[type="text"],
-        .post-form input[type="file"] {
-            width: 100%;
-            padding: 12px 16px;
-            margin-top: 12px;
-            margin-bottom: 18px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-size: 16px;
-            font-family: 'Inter', sans-serif;
-            background-color: #fafafa;
-            transition: border-color 0.2s;
-        }
-    
-        .post-form textarea:focus,
-        .post-form input[type="text"]:focus {
-            border-color: #0066ff;
-            outline: none;
-            background-color: #fff;
-        }
-    
-        .post-form input[type="file"] {
-            padding: 10px;
-            background-color: #f5f5f5;
-        }
-    
-        .post-form button {
-            background-color: #0066ff;
-            color: #ffffff;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 500;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, box-shadow 0.2s ease;
-        }
-    
-        .post-form button:hover {
-            background-color: var(--medium-gray);
-        }
-    
-        .post-form button:active {
-            background-color: #0041a8;
-        }
+/* Keep existing styles as is */
+.create-post-container {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.create-post-container h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.create-post-container textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+}
+
+.post-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.upload-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+}
+
+.upload-label .upload-icon {
+    width: 24px;
+    height: 24px;
+    stroke: #0073e6;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.tag-input {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.post-options button {
+    padding: 10px 20px;
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.image-name {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #555;
+    font-style: italic;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.post-options button:hover {
+    background-color: #005bb5;
+}
+
+/* Responsive styles removed as Bootstrap will handle responsiveness */
     </style>
 {% endblock %}
 
@@ -90,137 +120,186 @@
     </div>
 
     <!-- Main Content -->
-    <div class="main-content" style="padding-left: 1px; margin: 3px;">
-        <div class="container" style="margin-left: 12%;">
-            <div class="feed-layout">
-                <!-- Left Sidebar -->
-                <div class="feed-sidebar" style=" width: 20vw;">
-
-                    <!-- Suggested Alumni -->
-                    <div class="sidebar-card slide-in-left" style="animation-delay: 0.1s;">
-                        <h3 class="sidebar-title">People You May Know</h3>
-                        <div class="suggested-alumni-list">
-                            {% for person in people_you_may_know %}
-                            <div class="suggested-alumni">
-                                <div class="suggested-alumni-avatar">
-                                    {% if person.profile_picture %}
-                                        <img src="{{ person.profile_picture.url }}" alt="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%;">
-                                    {% else %}
-                                        {{ person.first_name|slice:":1" }}{{ person.last_name|slice:":1" }}
-                                    {% endif %}
-                                </div>
-                                <div class="suggested-alumni-info">
-                                    <div class="suggested-alumni-name">{{ person.full_name }}</div>
-                                    <div class="suggested-alumni-title">{{ person.college.name }}, '{{ person.graduation_year|stringformat:"02d" }}</div>
-                                </div>
-                                {% if sent_requests.person.id == 'pending' %}
-                                    <button class="suggested-alumni-action" disabled>Pending</button>
+    <div class="container my-3 mx-auto w-75">
+        <div class="row">
+            <!-- Left Sidebar -->
+            <aside class="col-12 col-md-3 d-flex ">
+                <div class="sidebar-card slide-in-left w-100" style="animation-delay: 0.1s;">
+                    <h3 class="sidebar-title text-center text-md-start">People You May Know</h3>
+                    <div class="suggested-alumni-list d-flex flex-column align-items-center align-items-md-start">
+                        {% for person in people_you_may_know %}
+                        <div class="suggested-alumni d-flex align-items-center mb-3">
+                            <div class="suggested-alumni-avatar me-2">
+                                {% if person.profile_picture %}
+                                    <img src="{{ person.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px;">
                                 {% else %}
-                                    <form method="post" action="{% url 'send_connection_request' person.id %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="suggested-alumni-action">Connect</button>
-                                    </form>
+                                    {{ person.first_name|slice:":1" }}{{ person.last_name|slice:":1" }}
                                 {% endif %}
                             </div>
-                            {% empty %}
-                                <p>No suggestions available.</p>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Main Feed -->
-                <div class="main-feed">
-                    <!-- Create Post -->
-                    <div class="create-post-card slide-in-top" >
-                        <div class="create-post-header">
-                            <div class="create-post-avatar">{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}</div>
-                            <form method="POST" enctype="multipart/form-data" class="post-form">
-                                {% csrf_token %}
-                                <div>
-                                    <textarea name="content" placeholder="What's on your mind?" rows="3" required></textarea>
-                                </div>
-                                <div>
-                                    <input type="text" name="hashtags" placeholder="Add hashtags (optional)">
-                                </div>
-                                <div>
-                                    <input type="file" name="media" accept="image/*,video/*">
-                                </div>
-                                <div class="create-post-actions">
-                                    <button type="submit" class="post-action-btn"> <i class="fas fa-image"></i> Post</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Post Filters -->
-                    <div class="post-filter slide-in-top" style="animation-delay: 0.1s;">
-                        <a href="{% url 'community_feed' %}?filter=all" class="post-filter-option {% if filter_option == 'all' %}active{% endif %}">All</a>
-                        <a href="{% url 'community_feed' %}?filter=my_college" class="post-filter-option {% if filter_option == 'my_college' %}active{% endif %}">My College</a>
-                        <a href="{% url 'community_feed' %}?filter=my_connections" class="post-filter-option {% if filter_option == 'my_connections' %}active{% endif %}">My Connections</a>
-                        <div class="post-filter-option">Recommended</div>
-                    </div>
-
-                    <!-- Feed Posts -->
-                    <div class="feed-posts" style="width: 850px;">
-                        {% for post in posts %}
-                            <div class="feed-post slide-in-bottom" style="animation-delay: 0.1s;">
-                                <div class="post-header">
-                                    <div class="post-avatar">{{ post.user.first_name|slice:":1" }}{{ post.user.last_name|slice:":1" }}</div>
-                                    <div class="post-info">
-                                        <span class="post-author">{{ post.user.full_name }}</span>
-                                        <div class="post-meta">
-                                            <span>{{ post.user.current_job }}</span>
-                                            <span>&bull;</span>
-                                            <span>{{ post.created_at|timesince }} ago</span>
-                                            <span>&bull;</span>
-                                            <span class="post-network">{{ post.user.college.name }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="post-options">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </div>
-                                </div>
-                                <div class="post-content">
-                                    <div class="post-text">
-                                        {{ post.content }}
-                                    </div>
-                                    <div class="post-hashtags">
-                                        {% for tag in post.get_hashtags_list %}
-                                            <a href="#" class="post-hashtag">#{{ tag }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                                <!-- Comments section can be added here -->
+                            <div class="suggested-alumni-info flex-grow-1">
+                                <div class="suggested-alumni-name">{{ person.full_name }}</div>
+                                <div class="suggested-alumni-title">{{ person.college.name }}, '{{ person.graduation_year|stringformat:"02d" }}</div>
                             </div>
+                            {% if sent_requests.person.id == 'pending' %}
+                                <button class="btn btn-secondary btn-sm ms-auto" disabled>Pending</button>
+                            {% else %}
+                                <form method="post" action="{% url 'send_connection_request' person.id %}" class="ms-auto">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 8%;">Connect</button>
+                                </form>
+                            {% endif %}
+                        </div>
                         {% empty %}
-                            <p>No posts to show.</p>
+                            <p>No suggestions available.</p>
                         {% endfor %}
                     </div>
                 </div>
+            </aside>
 
-            </div>
+            <!-- Main Feed -->
+            <main class="col-md-6 jsutify center">
+                <div class="mx-auto w-75">
+                    <!-- Create Post Section -->
+                    <div class="create-post-container">
+                        <h2>Create a Post</h2>
+                    
+                        <form id="createPostForm" enctype="multipart/form-data" method="POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <textarea
+                                    name="content"
+                                    placeholder="Share something with your alumni network..."
+                                    rows="4"
+                                    required
+                                    class="form-control"
+                                ></textarea>
+                            </div>
+                        
+                            <div class="post-options d-flex flex-wrap gap-3 align-items-center">
+                                <label for="mediaUpload" class="upload-label btn btn-outline-primary d-flex align-items-center gap-2 mb-0" style="cursor:pointer;color: whitesmoke;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="upload-icon" style="width: 24px; height: 24px; stroke: #0073e6;">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    <span>Add Image (.jpg only)</span>
+                                </label>
+                                <input type="file" id="mediaUpload" name="media" accept=".jpg" onchange="validateImage(this)" class="d-none" />
+                                <div id="imageNameDisplay" class="image-name"></div>
+                                <input
+                                    type="text"
+                                    name="hashtags"
+                                    placeholder="#Add #Tags"
+                                    class="form-control flex-grow-1"
+                                />
+                                <button type="submit" class="btn btn-primary fw-bold px-4">Post</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Post Filters -->
+                <div class="post-filter slide-in-top" style="animation-delay: 0.1s;">
+                    <a href="{% url 'community_feed' %}?filter=all" class="post-filter-option {% if filter_option == 'all' %}active{% endif %}">All</a>
+                    <a href="{% url 'community_feed' %}?filter=my_college" class="post-filter-option {% if filter_option == 'my_college' %}active{% endif %}">My College</a>
+                    <a href="{% url 'community_feed' %}?filter=my_connections" class="post-filter-option {% if filter_option == 'my_connections' %}active{% endif %}">My Connections</a>
+                    <div class="post-filter-option">Recommended</div>
+                </div>
+
+                <div class="mx-auto w-75 feed-posts">
+                    {% for post in posts %}
+                        <div class="feed-post slide-in-bottom mb-4" style="animation-delay: 0.1s;">
+                            <div class="post-header d-flex align-items-center">
+                                <div class="post-avatar me-3">{{ post.user.first_name|slice:":1" }}{{ post.user.last_name|slice:":1" }}</div>
+                                <div class="post-info flex-grow-1">
+                                    <span class="post-author">{{ post.user.full_name }}</span>
+                                    <div class="post-meta">
+                                        <span>{{ post.user.current_job }}</span>
+                                        <span>&bull;</span>
+                                        <span>{{ post.created_at|timesince }} ago</span>
+                                        <span>&bull;</span>
+                                        <span class="post-network">{{ post.user.college.name }}</span>
+                                    </div>
+                                </div>
+                                <div class="post-options">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </div>
+                            </div>
+                            <div class="post-content mt-2">
+                                <div class="post-text">
+                                    {{ post.content }}
+                                </div>
+                                {% if post.media %}
+                                    {% if post.media.url %}
+                                        <div class="post-media mt-3">
+                                            <a href="{{ post.media.url }}" target="_blank">
+                                                <img src="{{ post.media.url }}" alt="Post Image" class="img-fluid rounded" style="max-height: 400px; object-fit: cover;">
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                                <div class="post-hashtags mt-2">
+                                    {% for tag in post.get_hashtags_list %}
+                                        <a href="#" class="post-hashtag">#{{ tag }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- Comments section can be added here -->
+                        </div>
+                    {% empty %}
+                        <p>No posts to show.</p>
+                    {% endfor %}
+                </div>
+            </main>
+            
         </div>
     </div>
 
     <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <a href="{% url 'community_feed' %}" class="bottom-nav-item active">
+    <nav class="bottom-nav d-flex justify-content-between p-2 bg-white border-top">
+        <a href="{% url 'community_feed' %}" class="bottom-nav-item active text-center flex-fill">
             <i class="fas fa-home"></i>
             <span>Feed</span>
         </a>
-        <a href="{% url 'alumni_directory' %}" class="bottom-nav-item">
+        <a href="{% url 'alumni_directory' %}" class="bottom-nav-item text-center flex-fill">
             <i class="fas fa-users"></i>
             <span>Directory</span>
         </a>
-        <a href="{% url 'connections' %}" class="bottom-nav-item">
+        <a href="{% url 'connections' %}" class="bottom-nav-item text-center flex-fill">
             <i class="fas fa-trophy"></i>
             <span>Connections</span>
         </a>
-        <a href="{% url 'profile' %}" class="bottom-nav-item">
+        <a href="{% url 'profile' %}" class="bottom-nav-item text-center flex-fill">
             <i class="fas fa-user"></i>
             <span>Profile</span>
         </a>
     </nav>
+    <script>
+        function validateImage(input) {
+            const file = input.files[0];
+    
+            if (!file) return;
+    
+            // Check file type
+            const validTypes = ['image/jpeg'];
+            if (!validTypes.includes(file.type)) {
+                alert("Only .jpg files are allowed.");
+                input.value = '';
+                return;
+            }
+    
+            // Check file size (max 5MB)
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                alert("Image size must be 5MB or less.");
+                input.value = '';
+            }
+            const fileName = input.files[0] ? input.files[0].name : ''; // Get the file name
+            const imageNameDisplay = document.getElementById('imageNameDisplay');
+            
+            if (fileName) {
+                imageNameDisplay.textContent = `Selected File: ${fileName}`;
+            } else {
+                imageNameDisplay.textContent = ''; // Clear text if no file selected
+            }
+        }
+    </script>
 {% endblock %}

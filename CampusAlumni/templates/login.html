@@ -57,26 +57,26 @@
                     {% endif %}
                     
                     <div class="form-group">
-                        <input type="email" class="form-control" id="email" name="email" placeholder=" " required>
+                        <input type="email" required class="form-control" id="email" name="email" placeholder=" " required>
                         <label for="email" class="form-label">Email Address</label>
                         <div class="form-error" id="email-error">Please enter a valid email address</div>
                     </div>
-
                     <div class="form-group">
-                        <input type="password" class="form-control" id="password" name="password" placeholder=" " required>
+                        <input type="password" required class="form-control" id="password" name="password" placeholder=" " required>
                         <label for="password" class="form-label">Password</label>
                         <i class="fas fa-eye-slash password-toggle" id="password-toggle"></i>
                         <div class="form-error" id="password-error">Please enter your password</div>
                     </div>
+                    {% if Invalid %}
+                    <div if="emailHelp" class="form-text" style="color: #FF9966;">
+                        {{ Invalid }}
+                    </div>
+                    <br>
+                    {% endif %}
 
-                    <a href="#" class="forgot-password">Forgot Password?</a>
 
                     <button type="submit" class="btn-submit">Log In</button>
                 </form>
-
-                <div class="auth-divider">
-                    <span>or log in with</span>
-                </div>
 
                 <div class="auth-switch">
                     Don't have an account? <a href="{% url 'signup' %}">Sign Up</a>

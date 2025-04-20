@@ -36,7 +36,7 @@ def login_view(request):
             login(request, user)
             return redirect('community_feed')  # Changed redirect to community_feed
         else:
-            messages.error(request, 'Invalid email or password.')
+            return render(request, 'login.html',{"Invalid":"Password or Email is invalid"})
     return render(request, 'login.html')
 
 def signup_view(request):

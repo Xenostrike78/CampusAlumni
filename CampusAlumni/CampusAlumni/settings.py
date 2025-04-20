@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-szl)977a0r818=xg56%dh4%tw3z(_nv5$8o1)xgab6hckkm%3c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = ["campusalumnifiles.onrender.com","https://campusalumnifiles.onrender.com","www.campusalumnifiles.onrender.com"]
+=======
+ALLOWED_HOSTS = ["*","campusalumnifiles.onrender.com","https://campusalumnifiles.onrender.com","www.campusalumnifiles.onrender.com"]
+>>>>>>> 7fb0803 (Chnages)
 
 
 # Application definition
